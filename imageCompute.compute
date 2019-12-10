@@ -1,0 +1,19 @@
+﻿#pragma kernel CSMain
+
+RWTexture2D<float4> Res_Tex;//出力
+Texture2D<float4> Src_Tex;//入力
+
+
+[numthreads(16, 16, 1)]
+void CSMain(uint3 id : SV_DispatchThreadID)
+{
+	float4 centerColor = 0;
+	for (int k = -2; k < 3; k++) {
+		for (int l = -2; l < 3; l++) {
+			centerColor += Src_Tex[id.xy + (k, l)];//これあってない気する
+		}
+	}
+	centerColor = centerColor / 25;
+	centerColor.w = 1;
+	Res_Tex[id.xy] = centerColor;
+}
